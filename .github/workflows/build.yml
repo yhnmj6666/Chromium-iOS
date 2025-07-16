@@ -60,14 +60,14 @@ jobs:
         zip -r chromium.ipa Payload
         zip -r everything.zip siso_output siso.INFO siso_failed_commands.sh 
 
-    - name: Upload Everything
-      uses: actions/upload-artifact@v4
-      with:
-        name: ios-app
-        path: ~/chromium/src/out/Release-iphoneos/everything.zip
-
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: ios-app
         path: ~/chromium/src/out/Release-iphoneos/chromium.ipa
+
+    - name: Upload Everything
+      uses: actions/upload-artifact@v4
+      with:
+        name: logs
+        path: ~/chromium/src/out/Release-iphoneos/everything.zip
