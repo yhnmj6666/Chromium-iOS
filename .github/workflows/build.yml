@@ -23,10 +23,8 @@ jobs:
 
     - name: Install depot_tools
       run: |
-        # devpath="$(xcode-select -print-path)"
-        # echo $devpath
-        # ls $devpath/Platforms/MacOSX.platform/Developer/SDKs
-        # exit 1
+        ls /Applications/Xcode_16.2.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks
+        exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
         echo ":$HOME/depot_tools:$HOME/depot_tools/python-bin" >> $GITHUB_PATH
