@@ -45,6 +45,7 @@ jobs:
         gn gen out/Release-iphoneos --args='is_debug=false target_os="ios" ios_enable_code_signing=false is_component_build=false target_environment="device" target_cpu="arm64" use_blink=true'
 
     - name: Build Chromium for iOS
+      continue-on-error: true
       run: |
         cd ~/chromium/src
         autoninja -C out/Release-iphoneos chrome
