@@ -42,7 +42,7 @@ jobs:
     - name: Generate Build Files
       run: |
         cd ~/chromium/src && mkdir -p out/Release-iphoneos
-        gn gen out/Release-iphoneos --args='is_debug=false target_os="ios" ios_enable_code_signing=false is_component_build=false target_environment="device" target_cpu="arm64" use_blink=true'
+        gn gen out/Release-iphoneos --args='is_debug=false target_os="ios" ios_enable_code_signing=false ios_min_target="18.0" is_component_build=false target_environment="device" target_cpu="arm64" use_blink=true'
 
     - name: Build Chromium for iOS
       continue-on-error: true
@@ -56,6 +56,13 @@ jobs:
         mkdir -p Payload
         cp -r chromium.app Payload/
         zip -r chromium.ipa Payload
+        zip -r everything.zip siso_output siso.INFO siso_failed_commands.sh 
+
+    - name: Upload Everything
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-app
+        path: ~/chromium/src/out/Release-iphoneos/everything.zip
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
