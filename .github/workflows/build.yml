@@ -17,9 +17,14 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
     - name: Install depot_tools
       run: |
         devpath="$(xcode-select -print-path)"
+        echo $devpath
         ls $devpath/Platforms/MacOSX.platform/Developer/SDKs
         exit 1
         cd $HOME
