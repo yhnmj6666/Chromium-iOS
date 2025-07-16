@@ -23,9 +23,9 @@ jobs:
 
     - name: Install depot_tools
       run: |
-        ls /Applications/Xcode_16.2.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/
-        ls /Applications/Xcode_16.2.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks/BrowserEngineCore.framework/Headers
-        ls /Applications/Xcode_16.2.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.4.sdk/System/Library/Frameworks/BrowserEngineCore.framework/Headers
+        ls /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/
+        ls /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks/BrowserEngineCore.framework/Headers
+        ls /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.4.sdk/System/Library/Frameworks/BrowserEngineCore.framework/Headers
         exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
@@ -37,14 +37,14 @@ jobs:
         mkdir -p ~/chromium && cd ~/chromium
         fetch --no-history ios 
         cd src
-        sed -i '' 's/26.0/18.0/g' ./build/config/ios/ios_sdk_overrides.gni
+        sed -i '' 's/26.0/18.4/g' ./build/config/ios/ios_sdk_overrides.gni
         cat ./build/config/ios/ios_sdk_overrides.gni
         gclient sync
 
     - name: Generate Build Files
       run: |
         cd ~/chromium/src && mkdir -p out/Release-iphoneos
-        gn gen out/Release-iphoneos --args='is_debug=false target_os="ios" ios_enable_code_signing=false ios_min_target="18.0" is_component_build=false target_environment="device" target_cpu="arm64" use_blink=true'
+        gn gen out/Release-iphoneos --args='is_debug=false target_os="ios" ios_enable_code_signing=false ios_min_target="18.4" is_component_build=false target_environment="device" target_cpu="arm64" use_blink=true'
 
     - name: Build Chromium for iOS
       continue-on-error: true
