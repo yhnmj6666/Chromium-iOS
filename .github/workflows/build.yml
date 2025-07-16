@@ -37,6 +37,8 @@ jobs:
         mkdir -p ~/chromium && cd ~/chromium
         fetch --no-history ios 
         cd src
+        sed -i '' 's/26.0/18.0/g' ./build/config/ios/ios_sdk_overrides.gni
+        cat ./build/config/ios/ios_sdk_overrides.gni
         gclient sync
 
     - name: Generate Build Files
