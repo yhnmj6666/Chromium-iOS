@@ -21,6 +21,41 @@ jobs:
       with:
         xcode-version: latest-stable
 
+    - name: remove simulators
+      run: |
+        # Check if jq is installed
+        if ! command -v jq &> /dev/null
+        then
+            echo "jq is not installed. Please install it using 'brew install jq' or your package manager."
+            echo "Exiting script."
+            exit 1
+        fi
+
+        # Get simulator list in JSON format
+        SIMULATORS_JSON=$(xcrun simctl list -j devices)
+
+        # Define the target iOS version to KEEP
+        TARGET_IOS_VERSION="iOS 18.5"
+
+        # Initialize an array to store UDIDs of simulators to delete
+        SIMULATORS_TO_DELETE=()
+
+        echo "Identifying simulators to delete (keeping $TARGET_IOS_VERSION)..."
+
+        # Parse the JSON output to find simulators that are NOT iOS 18.5
+        # We iterate through each device, check if it's an iOS simulator,
+        # and if its runtime name does not contain the TARGET_IOS_VERSION.
+        # Note: The runtime name typically includes the OS version (e.g., "iOS 18.5").
+        # We also ensure it's a valid device and not a placeholder.
+        jq -r '.devices | to_entries[] | .value[] | select(.deviceTypeID | contains("iPhone") or contains("iPad")) | select(.isAvailable == true) | select(.runtime.name | contains("iOS")) | "\(.udid) \(.name) \(.runtime.name)"' <<< "$SIMULATORS_JSON" | while read -r UDID NAME RUNTIME_NAME; do
+            if [[ "$RUNTIME_NAME" != *"$TARGET_IOS_VERSION"* ]]; then
+                echo "  - Found to delete: $NAME ($UDID) running $RUNTIME_NAME"
+                SIMULATORS_TO_DELETE+=("$UDID")
+            else
+                echo "  - Keeping: $NAME ($UDID) running $RUNTIME_NAME"
+            fi
+        done
+
     - name: Install depot_tools
       run: |
         # sudo rm -r -f /Users/runner/Library/Android
@@ -34,7 +69,7 @@ jobs:
         # rm test100g
         xcrun simctl runtime list
         df -h
-        # exit 1
+        exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
         echo ":$HOME/depot_tools:$HOME/depot_tools/python-bin" >> $GITHUB_PATH
