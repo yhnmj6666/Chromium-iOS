@@ -23,9 +23,12 @@ jobs:
 
     - name: Install depot_tools
       run: |
-        # ls /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/
-        # ls /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/BrowserEngineCore.framework/Headers
-        # exit 1
+        du -h
+        du -s -h /usr/share/dotnet
+        du -s -h /opt/ghc
+        du -s -h "/usr/local/share/boost"
+        du -s -h "$AGENT_TOOLSDIRECTORY"
+        exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
         echo ":$HOME/depot_tools:$HOME/depot_tools/python-bin" >> $GITHUB_PATH
