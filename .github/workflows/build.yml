@@ -25,13 +25,13 @@ jobs:
       run: |
         # sudo rm -r -f /Users/runner/Library/Android # + 10G?
         # xcrun simctl runtime delete all # + 60G
+        sudo rm -r -f /Users/runner/.dotnet # +4G
         df -h
         ls -al
-        du -h -depth 1 /Applications
-        du -h -depth 1 /Users/runner
-        du -s -h /Users/runner/.dotnet
+        du -s -h /Applications/Xcode_16.1.app
+        du -s -h /Applications/Xcode_16.2.app
+        du -s -h /Applications/Xcode_16.3.app
         du -s -h "$AGENT_TOOLSDIRECTORY"
-        du -s -h /usr/local/share/dotnet
         du -s -h /opt/ghc
         exit 1
         cd $HOME
