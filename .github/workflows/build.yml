@@ -58,7 +58,7 @@ jobs:
         rm test100g
         xcrun simctl runtime list
         df -h
-        exit 1
+        # exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
         echo ":$HOME/depot_tools:$HOME/depot_tools/python-bin" >> $GITHUB_PATH
