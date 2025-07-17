@@ -24,7 +24,7 @@ jobs:
     - name: remove simulators
       run: |
         # Get simulator list in JSON format
-        SIMULATORS_JSON=$(xcrun simctl list -j devices)
+        SIMULATORS_JSON=$(xcrun simctl list -j)
         echo $SIMULATORS_JSON
 
         # Define the target iOS version to KEEP
