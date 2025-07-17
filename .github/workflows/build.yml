@@ -27,8 +27,8 @@ jobs:
         # xcrun simctl runtime delete all # + 60G
         df -h
         ls -al
-        du -h --max-depth=1 /Applications
-        du -h --max-depth=1 /Users/runner
+        du -h -depth=1 /Applications
+        du -h -depth=1 /Users/runner
         du -s -h /Users/runner/.dotnet
         du -s -h "$AGENT_TOOLSDIRECTORY"
         du -s -h /usr/local/share/dotnet
