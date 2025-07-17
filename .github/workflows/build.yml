@@ -24,15 +24,14 @@ jobs:
     - name: Install depot_tools
       run: |
         # sudo rm -r -f /Users/runner/Library/Android
-        xcrun simctl runtime delete all --dry-run
+        xcrun simctl runtime delete all
         df -h
         ls -al
-        which dotnet
-        which gchup
-        du -s -h /opt/ghc
+        dotnet --info
         du -s -h "/usr/local/share/boost"
         du -s -h "$AGENT_TOOLSDIRECTORY"
         du -s -h /usr/local/share/dotnet
+        du -s -h /opt/ghc
         exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
