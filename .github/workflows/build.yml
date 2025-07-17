@@ -23,45 +23,39 @@ jobs:
 
     - name: remove simulators
       run: |
-        # Get simulator list in JSON format
-        SIMULATORS_JSON=$(xcrun simctl list -j)
-        echo $SIMULATORS_JSON
-
-        # Define the target iOS version to KEEP
-        TARGET_IOS_VERSION="iOS 18.5"
-
-        # Initialize an array to store UDIDs of simulators to delete
-        SIMULATORS_TO_DELETE=()
-
-        echo "Identifying simulators to delete (keeping $TARGET_IOS_VERSION)..."
-
-        # Parse the JSON output to find simulators that are NOT iOS 18.5
-        # We iterate through each device, check if it's an iOS simulator,
-        # and if its runtime name does not contain the TARGET_IOS_VERSION.
-        # Note: The runtime name typically includes the OS version (e.g., "iOS 18.5").
-        # We also ensure it's a valid device and not a placeholder.
-        # The `select` conditions now explicitly check if `deviceTypeID` and `runtime.name`
-        # are strings before attempting `contains` to prevent errors with null values.
-        jq -r '.devices | to_entries[] | .value[] | select(.deviceTypeID? | type == "string" and (contains("iPhone") or contains("iPad"))) | select(.isAvailable == true) | select(.runtime.name? | type == "string" and contains("iOS")) | "\(.udid) \(.name) \(.runtime.name)"' <<< "$SIMULATORS_JSON" | while read -r UDID NAME RUNTIME_NAME; do
-            if [[ "$RUNTIME_NAME" != *"$TARGET_IOS_VERSION"* ]]; then
-                echo "  - Found to delete: $NAME ($UDID) running $RUNTIME_NAME"
-                SIMULATORS_TO_DELETE+=("$UDID")
-            else
-                echo "  - Keeping: $NAME ($UDID) running $RUNTIME_NAME"
-            fi
-        done
+        xcrun simctl runtime delete 40A486FF-311C-466D-A80C-EB8BD067D355
+        xcrun simctl runtime delete D88C74CC-4E49-4EFF-86F3-D56F3B6CB217
+        xcrun simctl runtime delete 44AC1CE5-82F6-41B8-9076-844646CAED9C
+        xcrun simctl runtime delete 45260C79-02EB-4AB6-8C42-F653900CC02B
+        xcrun simctl runtime delete 73BBD03E-5F54-495F-8835-956DCF21D5B1
+        xcrun simctl runtime delete 0459B843-DAA2-437E-8DDE-1C9AB555ABDC
+        xcrun simctl runtime delete 0FB75533-9ECD-4879-B257-BA4AC7807442
+        xcrun simctl runtime delete 3404B29B-561E-4B1E-B8D3-0A5B29C88015
+        xcrun simctl runtime delete 3480AD40-EA5B-4B0F-A992-B30824479251
+        xcrun simctl runtime delete 0D198167-EA28-4336-832C-53DFE69F90E1
+        xcrun simctl runtime delete A447B3A8-B3FB-48B5-AC1A-4F447745F47A
+        xcrun simctl runtime delete 5A70448C-6678-4CB4-A90B-FD5C6A2D8DC1
+        xcrun simctl runtime delete BA4218B3-B197-445F-BD67-27731B996258
+        xcrun simctl runtime delete 1A0E887E-7CB0-4DDF-8860-5AC4D2E22739
+        xcrun simctl runtime delete 3319A139-E9A3-4AF8-AC1F-7D3EE6B56891
+        xcrun simctl runtime delete 122B2A48-2879-407B-BB2F-C219553AB394
+        xcrun simctl runtime delete 4D142D71-7874-492F-97E7-7AE816AC801B
+        xcrun simctl runtime delete 362BE5DD-45B8-4AFF-A467-2DCB12053C7F
+        xcrun simctl runtime delete 4A32F213-A843-42F8-9508-4185A142FAA8
+        xcrun simctl runtime delete A897A72F-CE01-47BA-B352-BB92C6A29647
+        xcrun simctl runtime delete F1211B6F-6199-4C91-95CB-EF78FED63D0D
 
     - name: Install depot_tools
       run: |
-        # sudo rm -r -f /Users/runner/Library/Android
+        sudo rm -r -f /Users/runner/Library/Android
         # xcrun simctl runtime delete all
-        # sudo rm -r -f /Users/runner/.dotnet
-        # sudo rm -r -f /Applications/Xcode_16.1.app
-        # sudo rm -r -f /Applications/Xcode_16.2.app
-        # sudo rm -r -f /Applications/Xcode_16.3.app
-        # sudo rm -r -f "$AGENT_TOOLSDIRECTORY"
-        # mkfile -n 100g test100g
-        # rm test100g
+        sudo rm -r -f /Users/runner/.dotnet
+        sudo rm -r -f /Applications/Xcode_16.1.app
+        sudo rm -r -f /Applications/Xcode_16.2.app
+        sudo rm -r -f /Applications/Xcode_16.3.app
+        sudo rm -r -f "$AGENT_TOOLSDIRECTORY"
+        mkfile -n 100g test100g
+        rm test100g
         xcrun simctl runtime list
         df -h
         exit 1
