@@ -23,12 +23,13 @@ jobs:
 
     - name: Install depot_tools
       run: |
-        # sudo rm -r -f /Users/runner/Library/Android
-        xcrun simctl runtime delete all
+        # sudo rm -r -f /Users/runner/Library/Android # + 10G?
+        # xcrun simctl runtime delete all # + 60G
         df -h
         ls -al
-        dotnet --info
-        du -s -h "/usr/local/share/boost"
+        du -h --max-depth=1 /Applications
+        du -h --max-depth=1 /Users/runner
+        du -s -h /Users/runner/.dotnet
         du -s -h "$AGENT_TOOLSDIRECTORY"
         du -s -h /usr/local/share/dotnet
         du -s -h /opt/ghc
