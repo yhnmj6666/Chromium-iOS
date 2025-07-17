@@ -23,15 +23,17 @@ jobs:
 
     - name: Install depot_tools
       run: |
-        sudo rm -r -f /Users/runner/Library/Android
-        xcrun simctl runtime delete all
-        sudo rm -r -f /Users/runner/.dotnet
-        sudo rm -r -f /Applications/Xcode_16.1.app
-        sudo rm -r -f /Applications/Xcode_16.2.app
-        sudo rm -r -f /Applications/Xcode_16.3.app
-        sudo rm -r -f "$AGENT_TOOLSDIRECTORY"
-        mkfile -n 100g test100g
-        rm test100g
+        # sudo rm -r -f /Users/runner/Library/Android
+        # xcrun simctl runtime delete all
+        # sudo rm -r -f /Users/runner/.dotnet
+        # sudo rm -r -f /Applications/Xcode_16.1.app
+        # sudo rm -r -f /Applications/Xcode_16.2.app
+        # sudo rm -r -f /Applications/Xcode_16.3.app
+        # sudo rm -r -f "$AGENT_TOOLSDIRECTORY"
+        # mkfile -n 100g test100g
+        # rm test100g
+        xcrun simctl runtime list
+        df -h
         # exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
@@ -50,7 +52,7 @@ jobs:
     - name: Generate Build Files
       run: |
         cd ~/chromium/src && mkdir -p out/Release-iphoneos
-        gn gen out/Release-iphoneos --args='is_debug=false target_os="ios" ios_enable_code_signing=false ios_min_target="18.4" is_component_build=false target_environment="device" target_cpu="arm64" use_blink=true'
+        gn gen out/Release-iphoneos --args='is_debug=false target_os="ios" ios_enable_code_signing=false is_component_build=false target_environment="device" target_cpu="arm64" use_blink=true'
 
     - name: Build Chromium for iOS
       continue-on-error: true
@@ -64,7 +66,8 @@ jobs:
         mkdir -p Payload
         cp -r chromium.app Payload/
         zip -r chromium.ipa Payload
-        zip -r everything.zip siso_output siso.INFO siso_failed_commands.sh 
+        zip -r everything.zip siso_output siso.INFO siso_failed_commands.sh
+        df -h
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
