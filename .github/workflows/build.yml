@@ -23,8 +23,9 @@ jobs:
 
     - name: Install depot_tools
       run: |
-        du -h
-        du -s -h /usr/share/dotnet
+        df -h
+        du -s -h /Users/runner/Library/Android
+        du -s -h /usr/local/share/dotnet
         du -s -h /opt/ghc
         du -s -h "/usr/local/share/boost"
         du -s -h "$AGENT_TOOLSDIRECTORY"
