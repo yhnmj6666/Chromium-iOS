@@ -23,16 +23,16 @@ jobs:
 
     - name: Install depot_tools
       run: |
-        # sudo rm -r -f /Users/runner/Library/Android # + 10G?
-        # xcrun simctl runtime delete all # + 60G
+        sudo rm -r -f /Users/runner/Library/Android # + 10G?
+        xcrun simctl runtime delete all # + 60G
         sudo rm -r -f /Users/runner/.dotnet # +4G
+        sudo rm -r -f /Applications/Xcode_16.1.app
+        sudo rm -r -f /Applications/Xcode_16.2.app
+        sudo rm -r -f /Applications/Xcode_16.3.app
+        sudo rm -r -f "$AGENT_TOOLSDIRECTORY"
         df -h
-        ls -al
-        du -s -h /Applications/Xcode_16.1.app
-        du -s -h /Applications/Xcode_16.2.app
-        du -s -h /Applications/Xcode_16.3.app
-        du -s -h "$AGENT_TOOLSDIRECTORY"
-        du -s -h /opt/ghc
+        mkfile -n 100g test100g
+        rm test100g
         exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
