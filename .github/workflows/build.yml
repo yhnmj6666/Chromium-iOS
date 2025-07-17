@@ -23,12 +23,13 @@ jobs:
 
     - name: Install depot_tools
       run: |
+        sudo rm -r -f /Users/runner/Library/Android
         df -h
-        du -s -h /Users/runner/Library/Android
-        du -s -h /usr/local/share/dotnet
         du -s -h /opt/ghc
         du -s -h "/usr/local/share/boost"
         du -s -h "$AGENT_TOOLSDIRECTORY"
+        which dotnet
+        du -s -h /usr/local/share/dotnet
         exit 1
         cd $HOME
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
